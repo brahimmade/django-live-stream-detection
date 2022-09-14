@@ -1,0 +1,2 @@
+videos\shortvid.avi
+videos\longvid.m4v
