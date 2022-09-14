@@ -36,6 +36,7 @@ def get_video_stream():
         data_dict = pickle.loads(frame_data)
         frame = data_dict['frame']
         detection_info = str(dict(data_dict['detection_info']))
+        all_classes = data_dict['all_classes']
         print(detection_info)
         if settings_client.WRITE_IMAGE_INFO:
             cv2.putText(frame,
@@ -51,6 +52,7 @@ def get_video_stream():
         frame = buf.tobytes()
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+        yield all_classes
 
 
 @gzip.gzip_page
@@ -69,3 +71,4 @@ def video(request):
         print(e)
 
     return render(request, 'index.html')
+    # <img src="{{ url_for('video_feed') }}" height="80%">

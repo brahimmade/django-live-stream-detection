@@ -3,5 +3,5 @@ from . import views
 app_name = 'streamvid'
 
 urlpatterns = [
-    path('', views.video, name=('video_url')),
+    path('img_bytes/', views.video, name=('video_image_byte_url')),
 ]

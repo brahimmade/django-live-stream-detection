@@ -73,12 +73,9 @@ class ThreadedServer(object):
                         # # perform inference
 
                         results = model(frame)
-                        print(model.names)
+                        all_classes = model.names
                         labels, cord = results.xyxyn[0][:, -
                                                         1], results.xyxyn[0][:, :-1]
-                        print(labels)
-                        print(cord)
-
                         # # parse results
                         # predictions = results.pred[0]
                         # print('predictions: ', predictions)
@@ -107,6 +104,7 @@ class ThreadedServer(object):
                             frame, width=settings_server.FRAME_WIDTH)
                         data_dict['frame'] = frame
                         data_dict['detection_info'] = results_counter
+                        data_dict['all_classes'] = all_classes
                         a = pickle.dumps(data_dict)
                         message = struct.pack("Q", len(a))+a
                         time.sleep(0.01)
