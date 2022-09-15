@@ -25,8 +25,9 @@ class ThreadedServer(object):
         self.port = port
         self.number = number
 
-        self.fps = 1/60
-        self.fps_ms = int(self.fps*1000)
+        # self.fps = 1/60
+        # self.fps_ms = int(self.fps*100)
+        # print("self.fps_ms: ", self.fps_ms)
 
         self.prepare_socket()
 
@@ -40,7 +41,6 @@ class ThreadedServer(object):
             print("[SUCCESS] Socket binding done.")
         except socket.error as msg:
             print('Bind failed. Error : ' + str(sys.exc_info()))
-            print(msg)
             sys.exit()
 
     def listen(self):
@@ -68,23 +68,19 @@ class ThreadedServer(object):
                     data_dict = {}
                     while (vid.isOpened()):
                         img, frame = vid.read()
-                        time.sleep(self.fps)
+                        time.sleep(0.4)
                         # # Inference code starts
                         # # perform inference
+                        all_classes = model.names
 
                         results = model(frame)
-                        all_classes = model.names
-                        labels, cord = results.xyxyn[0][:, -
-                                                        1], results.xyxyn[0][:, :-1]
-                        # # parse results
+                        # labels, cord = results.xyxyn[0][:, -
+                        #                                 1], results.xyxyn[0][:, :-1]
+                        # parse results
                         # predictions = results.pred[0]
-                        # print('predictions: ', predictions)
                         # boxes = predictions[:, :4]
-                        # print('boxes: ', boxes)
                         # scores = predictions[:, 4]
-                        # print('scores', scores)
                         # categories = predictions[:, 5]
-                        # print('categories: ', categories)
 
                         # # show detection bounding box on image
                         # results.show()
@@ -93,11 +89,11 @@ class ThreadedServer(object):
                         results_list = literal_eval(results_list)
                         classes_list = [item["name"] for item in results_list]
                         results_counter = Counter(classes_list)
-                        print(results_counter)
+                        # print(results_counter)
                         results.render()
 
                         # # save results into results folder
-                        results.save(save_dir='results/')
+                        # results.save(save_dir='results/')
                         # # inference code ends
 
                         frame = imutils.resize(
@@ -105,9 +101,10 @@ class ThreadedServer(object):
                         data_dict['frame'] = frame
                         data_dict['detection_info'] = results_counter
                         data_dict['all_classes'] = all_classes
+                        data_dict['results_list'] = results_list
                         a = pickle.dumps(data_dict)
                         message = struct.pack("Q", len(a))+a
-                        time.sleep(0.01)
+                        time.sleep(0.5)
                         try:
                             # send message or data frames to client
                             client.sendall(message)

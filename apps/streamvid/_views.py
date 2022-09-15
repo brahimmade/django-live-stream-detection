@@ -10,6 +10,12 @@ from django.http import StreamingHttpResponse
 from django.views.decorators import gzip
 
 
+def yolobbox2bbox(x, y, w, h):
+    x1, y1 = x-w/2, y-h/2
+    x2, y2 = x+w/2, y+h/2
+    return x1, y1, x2, y2
+
+
 def get_video_stream():
     # create socket
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -38,16 +44,34 @@ def get_video_stream():
         frame = data_dict['frame']
         detection_info = str(dict(data_dict['detection_info']))
         all_classes = data_dict['all_classes']
-        results_dict = data_dict['results_list']
-        print(results_dict)
-        # if settings_client.DETECT_OBJECT:
-        #     dh, dw, _ = frame.shape
-        #     if predictions:
-        #         for box in boxes:
-        #             x1, y1, x2, y2 = int(
-        #                 box[0]*dh), int(box[1]*dw), int(box[2]*dh), int(box[3]*dw)
-        #             bgr = (0, 255, 0)
-        #             cv2.rectangle(frame, (x1, y1), (x2, y2), bgr, 2)
+        predictions = data_dict['predictions']
+        boxes = data_dict['boxes']
+        if settings_client.DETECT_OBJECT:
+            dh, dw, _ = frame.shape
+            if predictions:
+                for *xywh, conf, cls in predictions:
+                    # print(conf)
+                    # print(cls)
+                    # for bbox in boxes:
+                    x1, y1, x2, y2 = xywh
+                    = int(
+                        row[0]*x_shape), int(row[1]*y_shape), int(row[2]*x_shape), int(row[3]*y_shape)
+                    bgr = (0, 255, 0)
+                    cv2.rectangle(frame, (x1, y1), (x2, y2), bgr, 2)
+                    x, y, w, h = xywh
+                    bbox_left = x
+                    bbox_top = y
+                    bbox_w = w - x
+                    bbox_h = h - y
+                    print(bbox_left, bbox_top, bbox_w, bbox_h)
+                    cv2.rectangle(
+                        frame,
+                        (bbox_left, bbox_top),
+                        (bbox_w, bbox_h),
+                        # color_list[int(category_id)],
+                        (100, 0, 100),
+                        1,
+                    )
 
         if settings_client.WRITE_IMAGE_INFO:
             cv2.putText(frame,

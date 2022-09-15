@@ -17,3 +17,5 @@ WRITE_IMAGE_INFO = True     # write detected objects info on the image
 FONT_SCALE = 2
 FONT_COLOR = (0, 0, 255)    # tupe BGR not RGB
 FONT_THICHNESS = 1
+
+DETECT_OBJECT = True
