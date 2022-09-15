@@ -38,16 +38,15 @@ def get_video_stream():
         frame = data_dict['frame']
         detection_info = str(dict(data_dict['detection_info']))
         all_classes = data_dict['all_classes']
-        results_dict = data_dict['results_list']
-        print(results_dict)
-        # if settings_client.DETECT_OBJECT:
-        #     dh, dw, _ = frame.shape
-        #     if predictions:
-        #         for box in boxes:
-        #             x1, y1, x2, y2 = int(
-        #                 box[0]*dh), int(box[1]*dw), int(box[2]*dh), int(box[3]*dw)
-        #             bgr = (0, 255, 0)
-        #             cv2.rectangle(frame, (x1, y1), (x2, y2), bgr, 2)
+        results_list = data_dict['results_list']
+        if settings_client.DETECT_OBJECT:
+            dh, dw, _ = frame.shape
+            if results_list:
+                for pred in results_list:
+                    x1, y1, x2, y2 = int(
+                        pred['xmin']), int(pred['ymin']), int(pred['xmax']), int(pred['ymax'])
+                    bgr = (255, 255, 0)
+                    cv2.rectangle(frame, (x1, y1), (x2, y2), bgr, 3)
 
         if settings_client.WRITE_IMAGE_INFO:
             cv2.putText(frame,

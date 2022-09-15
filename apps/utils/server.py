@@ -69,6 +69,8 @@ class ThreadedServer(object):
                     while (vid.isOpened()):
                         img, frame = vid.read()
                         time.sleep(0.4)
+                        frame = imutils.resize(
+                            frame, width=settings_server.FRAME_WIDTH)
                         # # Inference code starts
                         # # perform inference
                         all_classes = model.names
@@ -96,8 +98,6 @@ class ThreadedServer(object):
                         # results.save(save_dir='results/')
                         # # inference code ends
 
-                        frame = imutils.resize(
-                            frame, width=settings_server.FRAME_WIDTH)
                         data_dict['frame'] = frame
                         data_dict['detection_info'] = results_counter
                         data_dict['all_classes'] = all_classes

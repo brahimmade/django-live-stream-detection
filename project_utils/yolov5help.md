@@ -164,3 +164,8 @@ with mss.mss() as sct:
             break
 
 ```
+
+results list received:
+```python
+results_list = [{'xmin': 1.9465026855, 'ymin': 62.251083374, 'xmax': 334.8536682129, 'ymax': 496.0778808594, 'confidence': 0.741962254, 'class': 59, 'name': 'bed'}, {'xmin': 1123.8736572266, 'ymin': 0.5675125122, 'xmax': 1279.8072509766, 'ymax': 167.1142883301, 'confidence': 0.6283448935, 'class': 62, 'name': 'tv'}, {'xmin': 1132.8088378906, 'ymin': 496.037109375, 'xmax': 1263.6857910156, 'ymax': 603.0759277344, 'confidence': 0.3710236847, 'class': 73, 'name': 'book'}, {'xmin': 540.3387451172, 'ymin': 0.0, 'xmax': 692.0639648438, 'ymax': 331.0688171387, 'confidence': 0.3388776481, 'class': 0, 'name': 'person'}, {'xmin': 0.7673721313, 'ymin': 376.2200927734, 'xmax': 216.818572998, 'ymax': 706.1331787109, 'confidence': 0.2838314772, 'class': 0, 'name': 'person'}, {'xmin': 98.2866821289, 'ymin': 491.9779052734, 'xmax': 218.1789855957, 'ymax': 709.9759521484, 'confidence': 0.2729455531, 'class': 73, 'name': 'book'}]
+```
